@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import style from "./Card.module.scss";
 
@@ -21,4 +22,11 @@ const Card = (props) => {
   );
 };
 
+Card.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string,
+    rating: PropTypes.number,
+    poster_path: PropTypes.string,
+  }),
+};
 export default Card;

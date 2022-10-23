@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
 const Form = ({ handleChange }) => {
   const {
@@ -17,6 +18,10 @@ const Form = ({ handleChange }) => {
       {errors.title_like ? <p>{errors.title_like.message}</p> : ""}
     </form>
   );
+};
+
+Form.propTypes = {
+  handleChange: PropTypes.func,
 };
 
 export default Form;
