@@ -1,0 +1,37 @@
+@use '/src/scss/utils/variables' as *;
+
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: $grey;
+    color: $yellow;
+
+    .wrapper {
+        max-width: 65rem;
+        margin-inline: auto;
+        text-align: center;
+        padding-block: .63rem;
+
+        .logo {
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .description {
+            font-size: 1rem;
+        }
+
+        a {
+            position: static;
+
+            &::before {
+                content: none;
+            }
+        }
+    }
+}
