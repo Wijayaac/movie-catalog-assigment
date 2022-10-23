@@ -1,17 +1,19 @@
 import debounce from "lodash.debounce";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { NavLink } from "react-router-dom";
+import toast, { LoaderIcon } from "react-hot-toast";
+
+import { MovieCard } from "../../components/MovieCard";
+import { SearchMovie } from "../../components/SearchForm";
 import { getMovies, searchMovies } from "./Dashboard.handler";
 
 const Dashboard = () => {
   const [movies, setMovies] = useState([]);
   const [links, setLinks] = useState([]);
-  const { register, reset } = useForm();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
+      setIsLoading(true);
       try {
         let { data, links } = await getMovies(1);
         if (data.length > 0) {
@@ -19,6 +21,7 @@ const Dashboard = () => {
           toast.success("Success get movies");
         }
         setLinks(links);
+        setIsLoading(false);
       } catch (error) {
         toast.error(error.message);
       }
@@ -27,7 +30,7 @@ const Dashboard = () => {
   }, []);
 
   const handlePagination = async (page) => {
-    reset();
+    setIsLoading(true);
     try {
       let { data, links } = await getMovies(page);
       if (data.length > 0) {
@@ -35,11 +38,14 @@ const Dashboard = () => {
         toast.success(`Showing movies on page ${page}`);
       }
       setLinks(links);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error);
     }
   };
+
   const handleChange = debounce(async (e) => {
+    setIsLoading(true);
     let searchQuery = e.target.value;
     try {
       let { data } = await searchMovies(searchQuery);
@@ -47,6 +53,7 @@ const Dashboard = () => {
         setMovies(data);
         toast.success(`Search results for : ${searchQuery} `);
       }
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.message);
     }
@@ -54,25 +61,13 @@ const Dashboard = () => {
 
   return (
     <div>
+      {isLoading && <LoaderIcon className='loader' />}
       <div className='movie-search'>
-        <form>
-          <input
-            type='text'
-            {...register("title_like")}
-            onChange={handleChange}
-          />
-        </form>
+        <SearchMovie handleChange={handleChange} />
       </div>
       <div className='movie-list'>
         {movies &&
-          movies.map((movie, key) => (
-            <div key={key}>
-              <img src={movie.poster_path} alt={movie.title} />
-              <p>{movie.title}</p>
-              <p>{movie.rating}</p>
-              <NavLink to={`/movies/${movie.id}`}>Show Details</NavLink>
-            </div>
-          ))}
+          movies.map((movie, key) => <MovieCard key={key} movie={movie} />)}
       </div>
       <div className='pagination'>
         {links &&

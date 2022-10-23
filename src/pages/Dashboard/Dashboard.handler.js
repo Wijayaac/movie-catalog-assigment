@@ -14,7 +14,7 @@ const formatPagination = (link, currentPage) => {
       return {
         page: page,
         text: content[1].replace(/ [a-zA-Z]+="/, "").replace(/"/, ""),
-        disabled: parseInt(page) === currentPage,
+        disabled: parseInt(page) === parseInt(currentPage),
       };
     });
 };

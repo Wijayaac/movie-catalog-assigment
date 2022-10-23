@@ -1,11 +1,14 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import { Navbar } from "../components/Navbar";
 
 const RootTemplate = () => {
   return (
     <div>
-      RootTemplate
-      <Outlet />
+      <Navbar />
+      <div className='page-wrapper'>
+        <Outlet />
+      </div>
     </div>
   );
 };
